@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+  <title>Small Wins</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha256-ZT4HPpdCOt2lvDkXokHuhJfdOKSPFLzeAJik5U/Q+l4=" crossorigin="anonymous" />
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Welcome to small wins!</h1>
+                <h2>Send a message!</h2>
+            </div>
+        </div>
+
+        {% for message in messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="POST" action="/broadcast" class="message-form">
+                      <div class="form-group">
+                        <label for="message">Message to send</label>
+                        <textarea name="message" class="form-control" placeholder="Please enter the message you wish to broadcast">{{ message }}</textarea>
+                      </div>
+                      <button type="submit" class="btn btn-success">Send</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Number
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>
+                                {{ user.name }}
+                            </td>
+                            <td>
+                                {{ user.number }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).on('submit', '.message-form', function(e){
+        e.preventDefault();
+        broadcastPost(
+            {
+                message : $(this).find('textarea[name="message"]').val()
+            },
+            console.log
+        );
+        $(this).find('textarea[name="message"]').attr('disabled', 'disabled');
+        $(this).find('button.btn').attr('disabled', 'disabled');
+        return false;
+    });
+
+    function broadcastPost(data, callbackFunction){
+        console.log("broadcastPost");
+        $.ajax({
+            method: "POST",
+            url: "/broadcast",
+            data: data,
+            success: function( response ) {
+                var responseObject = JSON.parse(response);
+                callbackFunction(responseObject);
+            },
+            error: function(jqXHR, err){
+                console.error(jqXHR, err, callbackFunction);
+            }
+        });
+    };
+
+</script>
+
+</body>
+</html>
