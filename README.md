@@ -1,7 +1,8 @@
 # Description
 
-App Engine App that can capture phone numbers and broadcast messages. Written in a short space of 
-time in aid of a hackathon. Ultimately was not used in said hackathon - but still works as designed.
+This is a Google App Engine app. It allows people to send their name to a Twilio number and thereby subscribe to messages broadcast in the future. Any messages sent and recieved are stored in the database. If a user sends a message after they've already subscribed it responds with a "Not Possible" polite message.
+
+This was written in a short space of time in aid of a hackathon project. It was ultimately not used in said hackathon - but it works as designed.
 
 # Requirements
 
